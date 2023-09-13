@@ -7,9 +7,7 @@ function getComputerChoice() {
     }else{
         return 'Scissors';
     }
-}
-
-const computerSelection = getComputerChoice();
+};
 let r = 'ROCK';
 let p = 'PAPER';
 let s = 'SCISSORS'; 
@@ -43,17 +41,41 @@ const playRound = (playerSelection,computerSelection) => {
         score.lose += 1;
         return `You Lose!.${r} beats ${s}`;
     }
-}
-function game(){
+};
+const game = document.querySelector('.game');
+const buttons = document.querySelectorAll('button');
+const scoreDiv = document.createElement('div');
+const divP1 = document.createElement('p');
+const divP2 = document.createElement('p');
+const divP3 = document.createElement('p');
+game.appendChild(scoreDiv);
+scoreDiv.appendChild(divP1);
+scoreDiv.appendChild(divP2);
+scoreDiv.appendChild(divP3);
+let ctr = 0;
+function playGame(){
 
-    for(let i = 0;i < 5;i++){
-        const playerSelection = window.prompt('Enter your choice: ');
-        if(playerSelection == null){
-            console.log('its aokay if you dont wanna play');
+    const playerSelection = this.textContent;
+    const computerSelection = getComputerChoice();
+    let res = playRound(playerSelection,computerSelection);
+    divP1.textContent = res;
+    ctr++;
+    divP2.textContent = `WINS: ${score.win} , LOSES: ${score.lose} , TIES: ${score.tie}`;
+    
+    if(ctr == 5){
+        if(score.win > score.lose && score.win > score.tie){
+            divP3.textContent = 'YOU WON';
+        } else if (score.lose == score.win){
+            divP3.textContent = 'YOU TIED'
+        }else if(score.lose > score.tie){
+            divP3.textContent = 'YOU LOST';
+        }  else{
+            divP3.textContent = 'YOU TIED'
         }
-        console.log(playRound(playerSelection,computerSelection));
+        [score.win , score.lose , score.tie] = [0 , 0 , 0];
+        ctr = 0;
     }
-    console.log(`Score: WINS:${score.win} , LOSES:${score.lose} , TIES:${score.tie}`)
-}
-game();
+        
+};
+buttons.forEach(btn => btn.addEventListener('click' , playGame));
 
